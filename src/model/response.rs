@@ -1,5 +1,6 @@
 use model::user::User;
 use model::article::Article;
+use model::card::Card;
 
 pub enum MyError {
     NotFound,
@@ -39,4 +40,18 @@ pub struct ArticleMsgs {
     pub status: i32,
     pub message : String,
     pub article : Article,
+}
+
+#[derive(Deserialize,Serialize, Debug)]
+pub struct CardMsgs{
+    pub status: i32,
+    pub message : String,
+    pub card: Card,
+}
+
+#[derive(Deserialize,Serialize, Debug)]
+pub struct CardListMsgs {
+    pub status: i32,
+    pub message : String,
+    pub card_list: Vec<Card>,
 }

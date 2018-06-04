@@ -30,3 +30,16 @@ CREATE TABLE  article (
  (5, 2, 'Job', 'Rust jobs','Today we are announcing an alpha version of incremental compilation', '2017-07-23 23:41:45.672805609'),
  (6, 3, 'Announcement', 'Introducing MIR','MIR is the key to ticking off a number of our highest priorities for Rust', '2017-07-23 23:41:45.672805609');
  SELECT setval('article_id_seq', 6, true);
+
+ CREATE TABLE card (
+   id SERIAL NOT NULL PRIMARY KEY,
+   user_id INTEGER NOT NULL,
+   front TEXT NOT NULL,
+   back TEXT NOT NULL,
+   body TEXT NOT NULL,
+   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+ );
+
+  INSERT INTO card (id, user_id, front, back, body, created_at) VALUES
+  (1, 1, 'Topic',  'Test Front', 'Test Back', '2017-07-24 23:41:45.672805609');
+  SELECT setval('card_id_seq', 1, true);-- Your SQL goes here

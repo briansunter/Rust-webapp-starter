@@ -32,7 +32,7 @@ use api::index::{AppState, home, path};
 use api::auth::{signup, signin};
 use api::article::{article,article_list, article_new};
 use api::user::{user_info, user_delete, user_update};
-
+use api::card::{card_list, card};
 fn main() {
     ::std::env::set_var("RUST_LOG", "actix_web=info");
     ::std::env::set_var("RUST_BACKTRACE", "1");
@@ -53,6 +53,8 @@ fn main() {
             .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
             .allowed_header(header::CONTENT_TYPE)
             .max_age(3600)
+            .resource("/api/cards/{card_id}", |r| { r.method(Method::GET).h(card); })
+            .resource("/api/cards", |r| { r.method(Method::GET).h(card_list); })
             .resource("/user/signup", |r| { r.method(Method::POST).with2(signup); })
             .resource("/user/signin", |r| { r.method(Method::POST).with2(signin); })
             .resource("/api/user_info", |r| { r.method(Method::GET).h(user_info); })
