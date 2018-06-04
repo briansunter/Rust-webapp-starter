@@ -62,7 +62,7 @@ impl Handler<CardId> for ConnDsl {
 
 
 impl Handler<CardNew> for ConnDsl {
-    type Result = Result<Msgs, Error>;
+    type Result = Result<CardMsgs, Error>;
 
     fn handle(&mut self, Card_new: CardNew, _: &mut Self::Context) -> Self::Result {
         use utils::schema::card::dsl::*;
@@ -75,9 +75,10 @@ impl Handler<CardNew> for ConnDsl {
             created_at: Utc::now().naive_utc(),
         };
         let conn = &self.0.get().map_err(error::ErrorInternalServerError)?;
-        diesel::insert_into(card).values(&new_Card).execute(conn).map_err(error::ErrorInternalServerError)?;
-        Ok(Msgs {
+        let inserted_card = diesel::insert_into(card).values(&new_Card).get_result(conn).map_err(error::ErrorInternalServerError)?;
+        Ok(CardMsgs {
                     status: 200,
+                    card: inserted_card,
                     message : "Card Publish Successful.".to_string(),
         })
     }

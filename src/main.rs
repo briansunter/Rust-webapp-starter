@@ -30,9 +30,9 @@ mod utils;
 use model::db::ConnDsl;
 use api::index::{AppState, home, path};
 use api::auth::{signup, signin};
-use api::article::{article,article_list, article_new};
 use api::user::{user_info, user_delete, user_update};
-use api::card::{card_list, card};
+use api::card::{card_list, card, card_new};
+
 fn main() {
     ::std::env::set_var("RUST_LOG", "actix_web=info");
     ::std::env::set_var("RUST_BACKTRACE", "1");
@@ -53,18 +53,21 @@ fn main() {
             .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
             .allowed_header(header::CONTENT_TYPE)
             .max_age(3600)
-            .resource("/api/cards/{card_id}", |r| { r.method(Method::GET).h(card); })
-            .resource("/api/cards", |r| { r.method(Method::GET).h(card_list); })
+            .resource("/api/cards", |r| {
+                 r.method(Method::POST).with2(card_new);
+                 r.method(Method::GET).h(card_list);
+            })
+            .resource("/api/cards/{card_id}", |r| {
+                 r.method(Method::GET).h(card);
+            })
             .resource("/user/signup", |r| { r.method(Method::POST).with2(signup); })
             .resource("/user/signin", |r| { r.method(Method::POST).with2(signin); })
             .resource("/api/user_info", |r| { r.method(Method::GET).h(user_info); })
             .resource("/api/user_delete", |r| { r.method(Method::GET).h(user_delete); })
             .resource("/api/user_update", |r| { r.method(Method::POST).with2(user_update); })
-            .resource("/api/article_list", |r| { r.method(Method::GET).h(article_list); })
-            .resource("/api/article_new", |r| { r.method(Method::POST).with2(article_new); })
-            .resource("/api/{article_id}", |r| { r.method(Method::GET).h(article); })
             .register())
             .handler("/", fs::StaticFiles::new("public")))
+
         .bind("127.0.0.1:8000").unwrap()
         .shutdown_timeout(2)
         .start();

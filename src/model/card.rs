@@ -48,5 +48,5 @@ impl Message for CardId {
 }
 
 impl Message for CardNew {
-    type Result = Result<Msgs, Error>;
+    type Result = Result<CardMsgs, Error>;
 }
