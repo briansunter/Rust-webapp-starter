@@ -44,6 +44,7 @@ pub fn card_new(card_new: Json<CardNew>, state: State<AppState>) -> FutureRespon
             front : card_new.front.clone(),
             back: card_new.back.clone(),
             body: card_new.body.clone(),
+            tags: card_new.tags.clone()
         })
         .from_err()
         .and_then(|res| {

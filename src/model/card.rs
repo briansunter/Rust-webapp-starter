@@ -3,7 +3,10 @@ use actix_web::*;
 use utils::schema::card;
 use chrono::NaiveDateTime;
 use model::response::{Msgs, CardMsgs, CardListMsgs};
-
+use diesel::pg::types;
+extern crate serde;
+extern crate serde_json;
+use diesel::pg::types::sql_types;
 #[derive(Clone,Debug,Serialize,Deserialize,PartialEq,Queryable)]
 pub struct Card {
     pub id: i32,
@@ -11,6 +14,7 @@ pub struct Card {
     pub front: String,
     pub back: String,
     pub body: String,
+    pub tags: Vec<String>,
     pub created_at: NaiveDateTime,
 }
 
@@ -21,6 +25,7 @@ pub struct NewCard<'a> {
     pub front: &'a str,
     pub back: &'a str,
     pub body: &'a str,
+    pub tags:  Vec<String>,
     pub created_at: NaiveDateTime,
 }
 
@@ -30,6 +35,7 @@ pub struct CardNew {
     pub front: String,
     pub back: String,
     pub body: String,
+    pub tags: Vec<String>,
 }
 
 #[derive(Deserialize,Serialize, Debug)]

@@ -20,9 +20,10 @@ CREATE TABLE users (
    front TEXT NOT NULL,
    back TEXT NOT NULL,
    body TEXT NOT NULL,
+   tags text[] not null default '{}',
    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
  );
 
-  INSERT INTO card (id, user_id, front, back, body, created_at) VALUES
-  (1, 1, 'Topic',  'Test Front', 'Test Back', '2017-07-24 23:41:45.672805609');
+  INSERT INTO card (id, user_id, front, back, body, tags, created_at) VALUES
+  (1, 1, 'Topic',  'Test Front', 'Test Back', '{"foo"}' , '2017-07-24 23:41:45.672805609');
   SELECT setval('card_id_seq', 1, true);-- Your SQL goes here

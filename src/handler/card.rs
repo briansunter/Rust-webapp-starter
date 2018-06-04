@@ -37,6 +37,7 @@ impl Handler<CardId> for ConnDsl {
                         front: the_Card.front.clone(),
                         back: the_Card.back.clone(),
                         body: the_Card.body.clone(),
+                        tags: the_Card.tags.clone(),
                         created_at: the_Card.created_at.clone(),
                     };
                     Ok(CardMsgs {
@@ -52,6 +53,7 @@ impl Handler<CardId> for ConnDsl {
                         front: "".to_owned(),
                         back: "".to_owned(),
                         body: "".to_owned(),
+                        tags: vec![].to_owned(),
                         created_at: Utc::now().naive_utc(),
                     };
                     Err(error::ErrorNotFound::<String>("foo".to_string()))
@@ -72,6 +74,7 @@ impl Handler<CardNew> for ConnDsl {
             front: &Card_new.front,
             back: &Card_new.back,
             body: &Card_new.body,
+            tags: Card_new.tags,
             created_at: Utc::now().naive_utc(),
         };
         let conn = &self.0.get().map_err(error::ErrorInternalServerError)?;
